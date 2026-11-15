@@ -118,7 +118,7 @@ aquatrack/
 
 Sebelum menjalankan project AquaTrack, pastikan perangkat sudah memiliki:
 
-- Node.js.
+- Node.js versi 20 atau versi yang kompatibel.
 - NPM (Node Package Manager).
 - Git.
 - Koneksi internet untuk mengakses repository dan GitHub Actions.
@@ -132,13 +132,13 @@ Sebelum menjalankan project AquaTrack, pastikan perangkat sudah memiliki:
 Clone repository menggunakan perintah:
 
 ```bash
-git clone URL_REPOSITORY
+git clone https://github.com/seizethedayie/AquaTrack.git
 ```
 
 Masuk ke direktori project:
 
 ```bash
-cd aquatrack
+cd AquaTrack
 ```
 
 ### 7.2 Menginstal Dependencies
@@ -175,7 +175,7 @@ Contoh:
 node src/app.js add "2026-11-15" 200
 ```
 
-Perintah tersebut akan menambahkan catatan penggunaan air sebanyak 200 liter pada tanggal 15 November 2026.
+Perintah tersebut digunakan untuk menambahkan catatan penggunaan air sebanyak 200 liter pada tanggal 15 November 2026.
 
 ---
 
@@ -210,10 +210,12 @@ Project AquaTrack menerapkan konsep *Continuous Integration* menggunakan GitHub 
 
 Continuous Integration merupakan proses otomatis untuk memeriksa dan menguji perubahan kode program agar kesalahan dapat diketahui lebih awal selama proses pengembangan perangkat lunak.
 
-Pada project ini, workflow CI dijalankan ketika terdapat aktivitas:
+Pada project ini, workflow CI dijalankan secara otomatis ketika terdapat aktivitas:
 
 - `push` ke branch `main`.
 - `pull_request` yang ditujukan ke branch `main`.
+
+Konfigurasi tersebut terdapat pada file `.github/workflows/ci.yml`.
 
 ### 9.1 Tahapan Pipeline CI
 
@@ -251,28 +253,113 @@ Penerapan CI pada AquaTrack bertujuan untuk:
 
 ---
 
-## 10. Cara Menjalankan Pipeline CI
+## 10. Pengujian Kegagalan dan Perbaikan CI
 
-Untuk menjalankan pipeline CI melalui GitHub Actions, lakukan langkah berikut:
+Dalam penerapan Continuous Integration, dilakukan simulasi kesalahan pada fungsi perhitungan total penggunaan air untuk mengetahui apakah sistem CI dapat mendeteksi kesalahan secara otomatis.
+
+### 10.1 Simulasi Kegagalan
+
+Simulasi dilakukan dengan menambahkan nilai tambahan sebesar 10 pada hasil perhitungan total penggunaan air.
+
+Perubahan tersebut menyebabkan hasil perhitungan tidak sesuai dengan nilai yang diharapkan pada pengujian otomatis.
+
+Akibatnya, beberapa test mengalami kegagalan karena hasil aktual berbeda dari hasil yang seharusnya.
+
+GitHub Actions kemudian menjalankan workflow dan menampilkan status **Failure** karena terdapat pengujian yang tidak berhasil.
+
+### 10.2 Perbaikan Kesalahan
+
+Setelah kesalahan terdeteksi, fungsi perhitungan total penggunaan air diperbaiki dengan menghilangkan nilai tambahan yang sebelumnya menyebabkan hasil perhitungan menjadi tidak sesuai.
+
+Setelah kode diperbaiki, pengujian otomatis dijalankan kembali menggunakan perintah:
+
+```bash
+npm test
+```
+
+Hasil pengujian menunjukkan bahwa seluruh test berhasil dilewati. GitHub Actions juga menjalankan kembali pipeline CI dan menampilkan status **Success**.
+
+### 10.3 Hasil Pengujian CI
+
+Berdasarkan simulasi yang telah dilakukan, diperoleh hasil sebagai berikut:
+
+| Kondisi Pengujian | Hasil |
+|---|---|
+| Pengujian sebelum simulasi kesalahan | Success |
+| Pengujian ketika terdapat kesalahan kode | Failure |
+| Pengujian setelah kode diperbaiki | Success |
+| Pengujian melalui Pull Request | Success |
+
+Pengujian ini menunjukkan bahwa GitHub Actions dapat membantu mendeteksi kesalahan kode secara otomatis serta memastikan perubahan yang telah diperbaiki dapat berjalan sesuai harapan.
+
+---
+
+## 11. Cara Menjalankan Pipeline CI
+
+Untuk menjalankan pipeline CI melalui GitHub Actions, lakukan langkah-langkah berikut:
 
 1. Pastikan seluruh perubahan kode sudah disimpan.
-2. Tambahkan perubahan menggunakan `git add .`.
-3. Buat commit menggunakan `git commit -m "Update AquaTrack"`.
-4. Kirim perubahan ke GitHub menggunakan `git push`.
+2. Tambahkan perubahan menggunakan perintah:
+
+   ```bash
+   git add .
+   ```
+
+3. Buat commit menggunakan perintah:
+
+   ```bash
+   git commit -m "Update AquaTrack"
+   ```
+
+4. Kirim perubahan ke branch `main` menggunakan perintah:
+
+   ```bash
+   git push origin main
+   ```
+
 5. Buka repository AquaTrack di GitHub.
 6. Pilih menu **Actions**.
 7. Pilih workflow **AquaTrack CI**.
 8. Periksa hasil setiap tahapan pipeline.
 
-Apabila seluruh tahapan berhasil dijalankan, GitHub Actions akan menampilkan status berhasil atau tanda centang hijau.
+Selain melalui push ke branch `main`, pengujian CI juga dapat dilakukan melalui Pull Request dengan membuat permintaan penggabungan perubahan dari branch lain menuju branch `main`.
+
+Apabila seluruh tahapan berhasil dijalankan, GitHub Actions akan menampilkan status **Success** atau tanda centang hijau.
+
+Jika terdapat kesalahan pada kode atau pengujian, workflow dapat menampilkan status **Failure** sehingga kesalahan dapat segera diperiksa dan diperbaiki.
 
 ---
 
-## 11. Kesimpulan
+## 12. Pembagian Tugas Kelompok
+
+Dalam pengerjaan project AquaTrack, setiap anggota kelompok memiliki tanggung jawab dalam proses pengembangan, pengujian, dan dokumentasi project.
+
+Pembagian tugas anggota kelompok adalah sebagai berikut:
+
+| Nama Anggota | Tanggung Jawab |
+|---|---|
+| Adelia Hafsani | [Mengembangkan aplikasi AquaTrack menggunakan Node.js, membuat fungsi perhitungan dan validasi penggunaan air, menyusun test otomatis, mengonfigurasi GitHub Actions, melakukan simulasi kegagalan dan perbaikan CI, mengelola repository GitHub, serta menyusun dokumentasi README.] |
+| Khalifah Azarine | [Membantu meninjau hasil pengujian aplikasi, memahami alur kerja Continuous Integration, serta memberikan masukan terhadap dokumentasi project.] |
+| Mulya Zazillah | [Membantu meninjau fitur aplikasi, memahami proses pengujian otomatis, serta memberikan masukan terhadap hasil pengembangan project.] |
+
+Pembagian tugas tersebut dilakukan untuk membantu proses pengerjaan project agar setiap anggota dapat berkontribusi dalam penyelesaian tugas kelompok.
+
+---
+
+## 13. Link Repository
+
+Repository project AquaTrack dapat diakses melalui tautan berikut:
+
+https://github.com/seizethedayie/AquaTrack
+
+Repository tersebut berisi source code aplikasi, file pengujian, konfigurasi workflow GitHub Actions, serta dokumentasi project.
+
+---
+
+## 14. Kesimpulan
 
 AquaTrack merupakan aplikasi pemantauan penggunaan air sederhana yang dikembangkan menggunakan JavaScript dan Node.js. Selain menyediakan fungsi perhitungan dan pencatatan penggunaan air, project ini juga menerapkan pengujian otomatis serta Continuous Integration menggunakan GitHub Actions.
 
-Melalui penerapan CI, proses pemeriksaan dan pengujian program dapat dilakukan secara otomatis setiap kali terdapat perubahan kode pada repository. Dengan demikian, kesalahan dapat diketahui lebih awal dan kualitas perangkat lunak dapat lebih terjaga selama proses pengembangan.
-Workflow CI AquaTrack berjalan secara otomatis ketika terdapat push ke branch main atau pull request yang ditujukan ke branch main.
+Melalui penerapan CI, proses pemeriksaan dan pengujian program dapat dilakukan secara otomatis setiap kali terdapat perubahan kode pada repository. Pengujian dengan simulasi kesalahan juga menunjukkan bahwa workflow CI dapat mendeteksi kegagalan dan memastikan kode yang telah diperbaiki dapat berjalan kembali dengan baik.
 
----
+Dengan demikian, penerapan Continuous Integration pada project AquaTrack membantu meningkatkan proses pengujian dan menjaga kualitas perangkat lunak selama pengembangan project.
