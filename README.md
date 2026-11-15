@@ -273,5 +273,6 @@ Apabila seluruh tahapan berhasil dijalankan, GitHub Actions akan menampilkan sta
 AquaTrack merupakan aplikasi pemantauan penggunaan air sederhana yang dikembangkan menggunakan JavaScript dan Node.js. Selain menyediakan fungsi perhitungan dan pencatatan penggunaan air, project ini juga menerapkan pengujian otomatis serta Continuous Integration menggunakan GitHub Actions.
 
 Melalui penerapan CI, proses pemeriksaan dan pengujian program dapat dilakukan secara otomatis setiap kali terdapat perubahan kode pada repository. Dengan demikian, kesalahan dapat diketahui lebih awal dan kualitas perangkat lunak dapat lebih terjaga selama proses pengembangan.
+Workflow CI AquaTrack berjalan secara otomatis ketika terdapat push ke branch main atau pull request yang ditujukan ke branch main.
 
 ---
