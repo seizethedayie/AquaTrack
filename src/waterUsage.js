@@ -1,6 +1,6 @@
 
 function getTotalUsage(data) {
-  return data.reduce((total, item) => total + item.usage, 0);
+  return data.reduce((total, item) => total + item.usage, 0) + 10;
 }
 
 function getAverageUsage(data) {
